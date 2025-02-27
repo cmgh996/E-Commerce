@@ -1,0 +1,18 @@
+# Archivos compilados de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+env/
+venv/
+ENV/
+.env
+
+# Archivos de bases de datos SQLite (opcional, si no deseas versionar tu DB)
+*.db
+*.sqlite3
+
+# Otros archivos y directorios temporales
+*.log
+*.tmp
