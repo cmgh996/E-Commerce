@@ -1,7 +1,12 @@
+"""
+This module sets up the SQLAlchemy engine and session for the application.
+"""
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import db
 
+# Create the SQLAlchemy engine
 engine = create_engine("sqlite:///example.db")
 
 # Create the tables in the database
