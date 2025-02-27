@@ -1,41 +1,42 @@
 from sqlalchemy import create_engine
-
 from sqlalchemy.orm import declarative_base, sessionmaker
-
 from models import db, User, Address
 
-engine = create_engine("sqlite:///example.db")
+from flask import Flask, request, jsonify
+from addreses import address_api
+from session import session
 
-# Create the tables in the database
-db.metadata.create_all(engine)
-
-# Set up the session
-Session = sessionmaker(bind=engine)
-session = Session()
-
-# Create a new user instance
-#new_user = User(name='Carlos', fullname='Carlos Guzman', nickname='El Chapo')
-
-# Add the new user to the session
-#session.add(new_user)
-
-# Commit the transaction to persist the new user
-#session.commit()
-
-# Optionally, query the database to confirm the user is saved
-# saved_user = session.query(User).filter_by(name='Carlos').first()
-# # print(saved_user)
-# if saved_user:
-#     new_address = Address(email_address="carlostunenuco69@gmail.com", user=saved_user)
-#     session.add(new_address)
-#     session.commit()
-
-# Query the database to confirm the address is saved
-# saved_address = session.query(Address).filter_by(email_address="carlostunenuco69@gmail.com").first()
-
-# print("user_name:", saved_address.user.name)
+# Create a new Flask application
+api = Flask(__name__)
+# Register the address_api blueprint
+api.register_blueprint(address_api)
 
 
-carlos = session.query(User).filter_by(name="Carlos").first()
+@api.route("/users", methods=["GET"])
+def get_users():
+    users = session.query(User).all()
 
-print(carlos.addresses[0].email_address)
+    usuarios_en_formato_diccionario = []
+
+    for user in users:
+        user_dict = {
+            "id": user.id,
+            "name": user.name,
+            "fullname": user.fullname,
+            "nickname": user.nickname,
+        }
+        usuarios_en_formato_diccionario.append(user_dict)
+
+    return jsonify(usuarios_en_formato_diccionario)
+
+@api.route("/users", methods=["POST"])
+def create_user():
+    data = request.get_json()
+    new_user = User(name=data["name"], fullname=data["fullname"], nickname=data["nickname"])
+    session.add(new_user)
+    session.commit()
+    return jsonify({"message": "User created successfully"}), 201
+
+
+if __name__ == "__main__":
+    api.run(port=5000, debug=True)
