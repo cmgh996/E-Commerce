@@ -114,3 +114,4 @@ class OrderItem(db):
 
 if __name__ == "__main__":
     gundam1 = Product(name="Gundam X-01", description="Basic Gundam with stock parts", price=200000000, stock=100, model="Version 0.1", weapon="Mega Particle Cannon")
+
