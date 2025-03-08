@@ -60,7 +60,7 @@ class Cart(db):
     creation_date = Column(Date, default=datetime.now(timezone.utc))
 
     def __repr__(self):
-        return f"<Cart(creation_date={self.creation_date}, relation_cart_item={self.relation_cart_item})>"
+        return f"<Cart(creation_date={self.creation_date})>"
 
 class CartItem(db):
     """
@@ -78,7 +78,7 @@ class CartItem(db):
 
 
     def __repr__(self):
-        return f"<CartItem(relation_cart={self.relation_cart}, relation_product={self.relation_product}, quantity={self.quantity})>"
+        return f"<CartItem(quantity={self.quantity}, cart_id={self.cart_id}, product_id={self.product_id})>"
 
 class Order(db):
     """
@@ -112,3 +112,5 @@ class OrderItem(db):
     def __repr__(self):
         return f"<OrderItem(relation_order={self.relation_order}, relation_product={self.relation_product}, quantity{self.quantity}, price{self.price})>"
 
+if __name__ == "__main__":
+    gundam1 = Product(name="Gundam X-01", description="Basic Gundam with stock parts", price=200000000, stock=100, model="Version 0.1", weapon="Mega Particle Cannon")
